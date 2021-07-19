@@ -4,7 +4,13 @@
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
       >
-        <chart-card
+      
+      <div id="vLine">
+        <ve-line  :data="sales_line_chart.data" :title="sales_line_chart.title"></ve-line>
+        <button v-on:click="loadData">Load!</button>
+      </div>
+
+      <!-- <chart-card
           :chart-data="dailySalesChart.data"
           :chart-options="dailySalesChart.options"
           :chart-type="'Line'"
@@ -26,7 +32,7 @@
               updated 4 minutes ago
             </div>
           </template>
-        </chart-card>
+        </chart-card> -->
       </div>
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
@@ -209,8 +215,13 @@ import {
   ChartCard,
   NavTabsCard,
   NavTabsTable,
-  OrderedTable
+  OrderedTable,
 } from "@/components";
+// import VCharts from "v-charts";
+
+import VeLine from 'v-charts/lib/line.common';
+
+
 
 export default {
   components: {
@@ -218,10 +229,30 @@ export default {
     ChartCard,
     NavTabsCard,
     NavTabsTable,
-    OrderedTable
+    OrderedTable,
+    // VeLine
   },
+
   data() {
     return {
+      sales_line_chart:{
+        data: {
+          columns: ["年份", "销售量", "价格"],
+          rows: [
+            { 年份: "2017年", 销售量: 123, 价格: 193 },
+            { 年份: "2018年", 销售量: 1223, 价格: 1223 },
+            { 年份: "2019年", 销售量: 2123, 价格: 1223 },
+            { 年份: "2020年", 销售量: 4123, 价格: 1236 },
+            { 年份: "2021年", 销售量: 3123, 价格: 123 },
+          ]
+        },
+
+        title: {
+          text: "销售情况",
+        },
+      },
+
+
       dailySalesChart: {
         data: {
           labels: ["M", "T", "W", "T", "F", "S", "S"],
@@ -307,6 +338,19 @@ export default {
         ]
       }
     };
-  }
+  },
+  // `methods` 内部的 `this` 指向当前活动实例
+  methods: {
+    loadData: function () {
+      console.log(this.sales_line_chart);
+      this.sales_line_chart.data.rows = [
+        { 年份: "2017年", 销售额: 123, 销售: 193 },
+        { 年份: "2018年", 销售额: 13, 销售: 123 },
+        { 年份: "2019年", 销售额: 21234, 销售: 223 },
+        { 年份: "2020年", 销售额: 4123, 销售: 236 },
+        { 年份: "2021年", 销售额: 3123, 销售: 23 },
+      ];
+    },
+  },
 };
 </script>

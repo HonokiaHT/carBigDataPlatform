@@ -16,7 +16,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from "vue";
 import VueRouter from "vue-router";
-import App from "./App";
+import App from "./App.vue";
 
 // router setup
 import routes from "./routes/routes";
@@ -31,6 +31,9 @@ import MaterialDashboard from "./material-dashboard";
 
 import Chartist from "chartist";
 
+import VCharts from "v-charts";
+
+
 // configure router
 const router = new VueRouter({
   routes, // short for routes: routes
@@ -44,6 +47,8 @@ Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);
 Vue.use(GlobalDirectives);
 Vue.use(Notifications);
+
+Vue.use(VCharts);
 
 /* eslint-disable no-new */
 new Vue({
