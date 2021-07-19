@@ -1,8 +1,6 @@
-CQU - 实训项目
+##CQU - 实训项目
 
-使用方法
-
-
+### 图表添加方法
 
 1. 使用 **`npm i v-charts echarts@4.9.0 -S`** 来安装 vcharts 以及 echarts，且使用低版本 echarts 来避免不适配。
 
@@ -31,7 +29,7 @@ CQU - 实训项目
        return {
          sales_line_chart:{
            data: {
-             columns: ["年份", "销售额", "销售"],
+             columns: ["年份", "销售量", "价格"],
              rows: [
                { 年份: "2017年", 销售量: 123, 价格: 193 },
                { 年份: "2018年", 销售量: 1223, 价格: 1223 },

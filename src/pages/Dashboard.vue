@@ -5,10 +5,10 @@
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
       >
       
-      <div id="vLine">
+      <!-- <div id="vLine"> -->
         <ve-line  :data="sales_line_chart.data" :title="sales_line_chart.title"></ve-line>
         <button v-on:click="loadData">Load!</button>
-      </div>
+      <!-- </div> -->
 
       <!-- <chart-card
           :chart-data="dailySalesChart.data"
@@ -236,16 +236,20 @@ export default {
   data() {
     return {
       sales_line_chart:{
+        // el:"#vLine",
         data: {
-          columns: ["年份", "销售量", "价格"],
+          columns: ["年份", "销售额", "销售"],
           rows: [
-            { 年份: "2017年", 销售量: 123, 价格: 193 },
-            { 年份: "2018年", 销售量: 1223, 价格: 1223 },
-            { 年份: "2019年", 销售量: 2123, 价格: 1223 },
-            { 年份: "2020年", 销售量: 4123, 价格: 1236 },
-            { 年份: "2021年", 销售量: 3123, 价格: 123 },
+            { 年份: "2017年", 销售额: 123, 销售: 193 },
+            { 年份: "2018年", 销售额: 1223, 销售: 1223 },
+            { 年份: "2019年", 销售额: 2123, 销售: 1223 },
+            { 年份: "2020年", 销售额: 4123, 销售: 1236 },
+            { 年份: "2021年", 销售额: 3123, 销售: 123 },
           ]
         },
+        // options:{
+        //   name: "ok",
+        // },
 
         title: {
           text: "销售情况",
