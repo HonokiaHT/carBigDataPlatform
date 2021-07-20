@@ -18,14 +18,16 @@
             <md-icon>close</md-icon>
             <md-tooltip md-direction="top">Close</md-tooltip>
           </md-button> -->
-          <template>
+            <div
+              class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
+            >
             <ve-ring :data="buyPurpose_ringChart.data"
               :title="buyPurpose_ringChart.title" 
               :settings="buyPurpose_ringChart.settings"
               :legend="buyPurpose_ringChart.legend"
               >
             </ve-ring>
-          </template>
+          </div>
         </md-table-cell>
       </md-table-row>
     </md-table>

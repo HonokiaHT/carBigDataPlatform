@@ -13,24 +13,35 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
+          
         </md-button>
 
         <div class="md-collapse">
-          <div class="md-autocomplete">
+          <!-- <div class="md-autocomplete">
             <md-autocomplete
               class="search"
               v-model="selectedEmployee"
               :md-options="employees"
+              v-on:click="changeSearch"
             >
               <label>Search...</label>
             </md-autocomplete>
-          </div>
-          <md-list>
-            <md-list-item href="#/">
-              <i class="material-icons">dashboard</i>
-              <p class="hidden-lg hidden-md">Dashboard</p>
-            </md-list-item>
+          </div> -->
 
+
+
+
+          <md-list>
+
+            <md-list-item href="#/">
+              <md-icon>directions_car</md-icon>
+              <p class="hidden-lg hidden-md">车辆信息</p>
+            </md-list-item>
+            <!-- <select v-model="selected">
+              <option selected>A</option>
+              <option>B</option>
+              <option>C</option>
+            </select> -->
             <!-- <md-list-item href="#/notifications" class="dropdown">
               <drop-down>
                 <a slot="title" class="dropdown-toggle" data-toggle="dropdown">
@@ -48,7 +59,7 @@
               </drop-down>
             </md-list-item> -->
 
-            <li class="md-list-item">
+            <!-- <li class="md-list-item">
               <a
                 href="#/notifications"
                 class="md-list-item-router md-list-item-container md-button-clean dropdown"
@@ -79,7 +90,9 @@
             <md-list-item href="#/user">
               <i class="material-icons">person</i>
               <p class="hidden-lg hidden-md">Profile</p>
-            </md-list-item>
+            </md-list-item> -->
+
+
           </md-list>
         </div>
       </div>
@@ -107,7 +120,10 @@ export default {
   methods: {
     toggleSidebar() {
       this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
-    }
+    },
+    changeSearch: function () {
+      console.log("c");
+    },
   }
 };
 </script>

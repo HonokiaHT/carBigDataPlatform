@@ -1,88 +1,111 @@
 <template>
   <div class="content">
     <div class="md-layout">
+
+      <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+      >
+
+        <!-- 车辆筛选部分 -->
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item">
+            <md-field>
+              <label for="carBrand_id">厂商</label>
+              <md-select v-model="carBrand"
+                        id="carBrand_id"
+                        >
+                <md-option 
+                  v-for="singleCarBrand in carBrands"
+                  :key="singleCarBrand.id"
+                  :value="singleCarBrand.name"
+                  >
+                  {{singleCarBrand.name}}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div>
+
+          <div class="md-layout-item">
+            <md-field>
+              <label for="carClass_id">车型</label>
+              <md-select v-model="carClass" id="carClass_id">
+                <md-option 
+                  v-for="singleCarClass in carClasses"
+                  :key="singleCarClass.id"
+                  :value="singleCarClass.name"
+                  >
+                  {{singleCarClass.name}}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div>
+
+          <div class="md-layout-item">
+            <md-field>
+              <label for="carName_id">车名</label>
+              <md-select v-model="carName"
+                        id="carName_id"
+                        @click="brandChange">
+                <md-option 
+                  v-for="singleCarName in carNames"
+                  :key="singleCarName.id"
+                  :value="singleCarName.name"
+                  >
+                  {{singleCarName.name}}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- 汽车信息 -->
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
       >
+        <h2 class="title">{{carName}}</h2>
+          <p>这里是图片</p>
+          <img id="imgid" src="../car_example.jpg"/>
+          <table class="category">
+            <tr>
+              <!-- <td>油耗：</td>
+              <td>很大</td>
+            </tr>
+            <tr>
+              <td>指导价：</td>
+              <td>100w</td> -->
+            </tr>
+          </table>
+      </div>
+
+      <!-- 购车目的 -->
+      <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
+      >
+        <!-- <ve-line  :data="sales_line_chart.data" :title="sales_line_chart.title"></ve-line>
+        <button v-on:click="loadData">Load!</button> -->
+        <ve-ring :data="buyPurpose_ringChart.data"
+                :title="buyPurpose_ringChart.title" 
+                :settings="buyPurpose_ringChart.settings"
+                :legend="buyPurpose_ringChart.legend"
+                >
+        </ve-ring>
+      </div>
       
-      <!-- <div id="vLine"> -->
-        <ve-line  :data="sales_line_chart.data" :title="sales_line_chart.title"></ve-line>
-        <button v-on:click="loadData">Load!</button>
-      <!-- </div> -->
-
-      <!-- <chart-card
-          :chart-data="dailySalesChart.data"
-          :chart-options="dailySalesChart.options"
-          :chart-type="'Line'"
-          data-background-color="blue"
-        >
-          <template slot="content">
-            <h4 class="title">Daily Sales</h4>
-            <p class="category">
-              <span class="text-success"
-                ><i class="fas fa-long-arrow-alt-up"></i> 55%
-              </span>
-              increase in today sales.
-            </p>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 4 minutes ago
-            </div>
-          </template>
-        </chart-card> -->
-      </div>
+      <!-- 销售组成 -->
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
       >
-        <chart-card
-          :chart-data="emailsSubscriptionChart.data"
-          :chart-options="emailsSubscriptionChart.options"
-          :chart-responsive-options="emailsSubscriptionChart.responsiveOptions"
-          :chart-type="'Bar'"
-          data-background-color="red"
-        >
-          <template slot="content">
-            <h4 class="title">Email Subscription</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>
-              updated 10 days ago
-            </div>
-          </template>
-        </chart-card>
+        <ve-pie :data="salesComponent_pieChart.data"
+                :title="salesComponent_pieChart.title"
+                :settings="salesComponent_pieChart.settings"
+                :legend="buyPurpose_ringChart.legend">
+        </ve-pie>
       </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
-      >
-        <chart-card
-          :chart-data="dataCompletedTasksChart.data"
-          :chart-options="dataCompletedTasksChart.options"
-          :chart-type="'Line'"
-          data-background-color="green"
-        >
-          <template slot="content">
-            <h4 class="title">Completed Tasks</h4>
-            <p class="category">
-              Last Campaign Performance
-            </p>
-          </template>
 
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>access_time</md-icon>
-              campaign sent 26 minutes ago
-            </div>
-          </template>
-        </chart-card>
-      </div>
+      <!-- 总销量 -->
       <div
         class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
       >
@@ -92,53 +115,31 @@
           </template>
 
           <template slot="content">
-            <p class="category">Revenue</p>
-            <h3 class="title">$34,245</h3>
+            <h3 class="category">销售总量</h3>
+            <h3 class="title">{{info_data.salesCount}}</h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
               <md-icon>date_range</md-icon>
-              Last 24 Hours
+              Last 5 Years
             </div>
           </template>
         </stats-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
-        <stats-card data-background-color="orange">
-          <template slot="header">
-            <md-icon>content_copy</md-icon>
-          </template>
 
-          <template slot="content">
-            <p class="category">Used Space</p>
-            <h3 class="title">
-              49/50
-              <small>GB</small>
-            </h3>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon class="text-danger">warning</md-icon>
-              <a href="#pablo">Get More Space...</a>
-            </div>
-          </template>
-        </stats-card>
-      </div>
+      <!-- 指导价 -->
       <div
         class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
       >
         <stats-card data-background-color="red">
           <template slot="header">
-            <md-icon>info_outline</md-icon>
+            <md-icon>paid</md-icon>
           </template>
 
           <template slot="content">
-            <p class="category">Fixed Issues</p>
-            <h3 class="title">75</h3>
+            <h3 class="category">指导价</h3>
+            <h3 class="title">{{info_data.price}}</h3>
           </template>
 
           <template slot="footer">
@@ -149,17 +150,46 @@
           </template>
         </stats-card>
       </div>
+
+      <!-- 油耗 -->
+      <div
+        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+      >
+        <stats-card data-background-color="orange">
+          <template slot="header">
+            <md-icon>local_gas_station</md-icon>
+          </template>
+
+          <template slot="content">
+            <h3 class="category">油耗</h3>
+            <h3 class="title">
+              <br/>
+              {{info_data.oilConsume}}
+              <small>L</small>
+            </h3>
+          </template>
+
+          <template slot="footer">
+            <div class="stats">
+              <!-- <md-icon class="text-danger">warning</md-icon>
+              <a href="#pablo">Get More Space...</a> -->
+            </div>
+          </template>
+        </stats-card>
+      </div>
+
+      <!-- 包含颜色 -->
       <div
         class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
       >
         <stats-card data-background-color="blue">
           <template slot="header">
-            <i class="fab fa-twitter"></i>
+            <md-icon>palette</md-icon>
           </template>
 
           <template slot="content">
-            <p class="category">Folowers</p>
-            <h3 class="title">+245</h3>
+            <h3 class="category">包含颜色</h3>
+            <h3 class="title">{{info_data.colors[0]}}</h3>
           </template>
 
           <template slot="footer">
@@ -170,41 +200,8 @@
           </template>
         </stats-card>
       </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-      >
-        <md-card>
-          <md-card-header data-background-color="orange">
-            <h4 class="title">Employees Stats</h4>
-            <p class="category">New employees on 15th September, 2016</p>
-          </md-card-header>
-          <md-card-content>
-            <ordered-table table-header-color="orange"></ordered-table>
-          </md-card-content>
-        </md-card>
-      </div>
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-50"
-      >
-        <nav-tabs-card>
-          <template slot="content">
-            <span class="md-nav-tabs-title">Tasks:</span>
-            <md-tabs class="md-success" md-alignment="left">
-              <md-tab id="tab-home" md-label="Bugs" md-icon="bug_report">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
 
-              <md-tab id="tab-pages" md-label="Website" md-icon="code">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-
-              <md-tab id="tab-posts" md-label="server" md-icon="cloud">
-                <nav-tabs-table></nav-tabs-table>
-              </md-tab>
-            </md-tabs>
-          </template>
-        </nav-tabs-card>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -219,128 +216,118 @@ import {
 } from "@/components";
 // import VCharts from "v-charts";
 
-import VeLine from 'v-charts/lib/line.common';
-
+import VeRing from "v-charts/lib/ring.common";
+import VeLine from "v-charts/lib/line.common";
+import VePie from "v-charts/lib/pie.common";
 
 
 export default {
   components: {
     StatsCard,
-    ChartCard,
-    NavTabsCard,
-    NavTabsTable,
-    OrderedTable,
+    // ChartCard,
+    // NavTabsCard,
+    // NavTabsTable,
+    // OrderedTable,
     // VeLine
   },
 
   data() {
     return {
-      sales_line_chart:{
-        // el:"#vLine",
-        data: {
-          columns: ["年份", "销售额", "销售"],
+      //车辆选择部分
+      carBrand: "示例品牌",
+      carClass: "示例车型",
+      carName: "示例车辆",
+
+      carBrands:[
+        {id: 1, name: "品牌1"},
+        {id: 2, name: "品牌2"},
+        {id: 3, name: "品牌3"},
+      ],
+      carClasses:[
+        {id: 1, name: "车型1"},
+        {id: 2, name: "车型2"},
+        {id: 3, name: "车型3"},
+      ],
+      carNames:[
+
+      ],
+
+      //车辆信息
+      info_data:{
+        salesCount: 23367,
+        price: "100,000",
+        oilConsume: 100,
+        colors: ["蓝","红","绿"],
+        img: "",
+      },
+
+
+      //购车目的
+      buyPurpose_ringChart:{
+        data:{
+          columns: ['目的', '人数'],
           rows: [
-            { 年份: "2017年", 销售额: 123, 销售: 193 },
-            { 年份: "2018年", 销售额: 1223, 销售: 1223 },
-            { 年份: "2019年", 销售额: 2123, 销售: 1223 },
-            { 年份: "2020年", 销售额: 4123, 销售: 1236 },
-            { 年份: "2021年", 销售额: 3123, 销售: 123 },
+            { '目的': '出行', '人数': 1393 },
+            { '目的': '代步', '人数': 3530 },
+            { '目的': '娱乐', '人数': 2923 },
+            { '目的': '其他', '人数': 1723 },
+            { '目的': '其它2', '人数': 3792 },
+            { '目的': '其他3', '人数': 4593 }
           ]
         },
-        // options:{
-        //   name: "ok",
-        // },
-
+        settings:{
+          radius: [60, 100],
+          lable:{
+            show: true,
+            position: "center"
+          }
+          // offsetY: 
+        },
         title: {
-          text: "销售情况",
+          text: "购车目的",
+          subtext: '虚构',
+          left: 'center'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
         },
       },
 
+      //销售组成
+      salesComponent_pieChart:{
+        data:{
+          columns: ["组成", "销售数"],
+          rows: [
+            { "组成": "10~20岁", "销售数": 1393 },
+            { "组成": "20~30岁", "销售数": 3530 },
+            { "组成": "30~40岁", "销售数": 2923 },
 
-      dailySalesChart: {
-        data: {
-          labels: ["M", "T", "W", "T", "F", "S", "S"],
-          series: [[12, 17, 7, 17, 23, 18, 38]]
-        },
-        options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }
-        }
-      },
-      dataCompletedTasksChart: {
-        data: {
-          labels: ["12am", "3pm", "6pm", "9pm", "12pm", "3am", "6am", "9am"],
-          series: [[230, 750, 450, 300, 280, 240, 200, 190]]
-        },
 
-        options: {
-          lineSmooth: this.$Chartist.Interpolation.cardinal({
-            tension: 0
-          }),
-          low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-          }
-        }
-      },
-      emailsSubscriptionChart: {
-        data: {
-          labels: [
-            "Ja",
-            "Fe",
-            "Ma",
-            "Ap",
-            "Mai",
-            "Ju",
-            "Jul",
-            "Au",
-            "Se",
-            "Oc",
-            "No",
-            "De"
-          ],
-          series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
-        },
-        options: {
-          axisX: {
-            showGrid: false
-          },
-          low: 0,
-          high: 1000,
-          chartPadding: {
-            top: 0,
-            right: 5,
-            bottom: 0,
-            left: 0
-          }
-        },
-        responsiveOptions: [
-          [
-            "screen and (max-width: 640px)",
-            {
-              seriesBarDistance: 5,
-              axisX: {
-                labelInterpolationFnc: function(value) {
-                  return value[0];
-                }
-              }
-            }
+            { "组成": "华北", "销售数": 1723 },
+            { "组成": "西北", "销售数": 3792 },
+            { "组成": "西南", "销售数": 4593 }
           ]
-        ]
-      }
+        },
+        settings:{
+          level:[
+            ["10~20岁","20~30岁","30~40岁"],
+            ["华北","西北","西南"]
+          ]
+        },
+        title:{
+          text: "销售组成",
+          subtext: "虚构",
+          left: "center"
+        },
+        legend: {
+          orient: "vertical",
+          left: "left",
+        },
+      },
+
+
+      
     };
   },
   // `methods` 内部的 `this` 指向当前活动实例
@@ -355,6 +342,11 @@ export default {
         { 年份: "2021年", 销售额: 3123, 销售: 23 },
       ];
     },
+    brandChange: function(){
+      this.carNames = this.carBrands;
+      console.log(typeof(this.info_data.img));
+      console.log(document.getElementById("imgid").src);
+    }
   },
 };
 </script>
