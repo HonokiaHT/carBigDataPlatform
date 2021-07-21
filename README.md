@@ -1,5 +1,13 @@
 ## CQU - 实训项目
 
+
+
+![map_example](./src/map_example.png)
+
+---
+
+
+
 ### 图表添加方法
 
 1. 使用 **`npm i v-charts echarts@4.9.0 -S`** 来安装 vcharts 以及 echarts，且使用低版本 echarts 来避免不适配。
@@ -49,5 +57,4 @@
 
    
 
-   
 
