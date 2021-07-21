@@ -6,7 +6,9 @@
           :data="sales_line_chart.data"
           :title="sales_line_chart.title"
         ></ve-line> -->
-        <ve-bar :data="sales_line_chart.data" :title="sales_line_chart.title">
+        <ve-bar :data="sales_line_chart.data"
+                :title="sales_line_chart.title"
+                theme="light">
         </ve-bar>
         <edit-profile-form data-background-color="green"> </edit-profile-form>
       </div>

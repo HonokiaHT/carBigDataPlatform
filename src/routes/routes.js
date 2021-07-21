@@ -7,7 +7,6 @@ import Typography from "@/pages/Typography.vue";
 import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Notifications from "@/pages/Notifications.vue";
-import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
 
 const routes = [
   {
@@ -17,7 +16,7 @@ const routes = [
     children: [
       {
         path: "dashboard",
-        name: "Dashboard",
+        name: "车辆信息",
         component: Dashboard,
       },
       {
@@ -32,12 +31,12 @@ const routes = [
       },
       {
         path: "typography",
-        name: "Typography",
+        name: "效益分析",
         component: Typography,
       },
       {
         path: "icons",
-        name: "Icons",
+        name: "销售趋势",
         component: Icons,
       },
       {
@@ -50,13 +49,8 @@ const routes = [
       },
       {
         path: "notifications",
-        name: "Notifications",
+        name: "对比分析",
         component: Notifications,
-      },
-      {
-        path: "upgrade",
-        name: "Upgrade to PRO",
-        component: UpgradeToPRO,
       },
     ],
   },

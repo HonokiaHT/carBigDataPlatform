@@ -13,6 +13,7 @@
               <label for="carBrand_id">厂商</label>
               <md-select v-model="carBrand"
                         id="carBrand_id"
+                        @md-selected="carBrandChange"
                         >
                 <md-option 
                   v-for="singleCarBrand in carBrands"
@@ -28,7 +29,9 @@
           <div class="md-layout-item">
             <md-field>
               <label for="carClass_id">车型</label>
-              <md-select v-model="carClass" id="carClass_id">
+              <md-select v-model="carClass"
+                        id="carClass_id"
+                        @md-selected="carClassChange">
                 <md-option 
                   v-for="singleCarClass in carClasses"
                   :key="singleCarClass.id"
@@ -45,7 +48,7 @@
               <label for="carName_id">车名</label>
               <md-select v-model="carName"
                         id="carName_id"
-                        @click="brandChange">
+                        @md-selected="carNameChange">
                 <md-option 
                   v-for="singleCarName in carNames"
                   :key="singleCarName.id"
@@ -67,16 +70,16 @@
       >
         <h2 class="title">{{carName}}</h2>
           <p>这里是图片</p>
-          <img id="imgid" src="../car_example.jpg"/>
+          <img id="imgid" src="https://car3.autoimg.cn/cardfs/product/g26/M05/FD/1B/1024x0_1_q95_autohomecar__ChwFkF9jgNOAe-mVADb8z2QVNjU291.jpg"/>
           <table class="category">
-            <tr>
-              <!-- <td>油耗：</td>
+            <!-- <tr>
+              <td>油耗：</td>
               <td>很大</td>
             </tr>
             <tr>
               <td>指导价：</td>
-              <td>100w</td> -->
-            </tr>
+              <td>100w</td>
+            </tr> -->
           </table>
       </div>
 
@@ -90,6 +93,7 @@
                 :title="buyPurpose_ringChart.title" 
                 :settings="buyPurpose_ringChart.settings"
                 :legend="buyPurpose_ringChart.legend"
+                theme="light"
                 >
         </ve-ring>
       </div>
@@ -101,7 +105,8 @@
         <ve-pie :data="salesComponent_pieChart.data"
                 :title="salesComponent_pieChart.title"
                 :settings="salesComponent_pieChart.settings"
-                :legend="buyPurpose_ringChart.legend">
+                :legend="buyPurpose_ringChart.legend"
+                theme="light">
         </ve-pie>
       </div>
 
@@ -116,7 +121,7 @@
 
           <template slot="content">
             <h3 class="category">销售总量</h3>
-            <h3 class="title">{{info_data.salesCount}}</h3>
+            <h3 class="title">{{selectedCarInfo.salesCount}}</h3>
           </template>
 
           <template slot="footer">
@@ -139,7 +144,7 @@
 
           <template slot="content">
             <h3 class="category">指导价</h3>
-            <h3 class="title">{{info_data.price}}</h3>
+            <h3 class="title">{{selectedCarInfo.price}}</h3>
           </template>
 
           <template slot="footer">
@@ -163,16 +168,15 @@
           <template slot="content">
             <h3 class="category">油耗</h3>
             <h3 class="title">
-              <br/>
-              {{info_data.oilConsume}}
+              {{selectedCarInfo.oilConsume}}
               <small>L</small>
             </h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <!-- <md-icon class="text-danger">warning</md-icon>
-              <a href="#pablo">Get More Space...</a> -->
+              <md-icon>local_offer</md-icon>
+              百公里
             </div>
           </template>
         </stats-card>
@@ -189,13 +193,13 @@
 
           <template slot="content">
             <h3 class="category">包含颜色</h3>
-            <h3 class="title">{{info_data.colors[0]}}</h3>
+            <h3 class="title">{{selectedCarInfo.colors[0]}}</h3>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>update</md-icon>
-              Just Updated
+              <md-icon>palette</md-icon>
+              Colorful
             </div>
           </template>
         </stats-card>
@@ -220,6 +224,16 @@ import VeRing from "v-charts/lib/ring.common";
 import VeLine from "v-charts/lib/line.common";
 import VePie from "v-charts/lib/pie.common";
 
+var buyPurposeColomn = ['目的', '人数'];
+var buyPurposeRow = [
+            { '目的': '旅行', '人数': 1393 },
+            { '目的': '代步', '人数': 3530 },
+            { '目的': '娱乐', '人数': 2923 },
+            { '目的': '商业', '人数': 1723 },
+            { '目的': '其它', '人数': 3792 },
+          ];
+var salesComponentColomn = "";
+
 
 export default {
   components: {
@@ -234,16 +248,16 @@ export default {
   data() {
     return {
       //车辆选择部分
-      carBrand: "示例品牌",
-      carClass: "示例车型",
-      carName: "示例车辆",
+      carBrand: "品牌1",
+      carClass: "",
+      carName: "",
 
-      carBrands:[
+      carBrands: [
         {id: 1, name: "品牌1"},
         {id: 2, name: "品牌2"},
         {id: 3, name: "品牌3"},
-      ],
-      carClasses:[
+      ],       
+      carClasses: [
         {id: 1, name: "车型1"},
         {id: 2, name: "车型2"},
         {id: 3, name: "车型3"},
@@ -253,9 +267,9 @@ export default {
       ],
 
       //车辆信息
-      info_data:{
+      selectedCarInfo:{
         salesCount: 23367,
-        price: "100,000",
+        price: "100,086",
         oilConsume: 100,
         colors: ["蓝","红","绿"],
         img: "",
@@ -265,23 +279,16 @@ export default {
       //购车目的
       buyPurpose_ringChart:{
         data:{
-          columns: ['目的', '人数'],
-          rows: [
-            { '目的': '出行', '人数': 1393 },
-            { '目的': '代步', '人数': 3530 },
-            { '目的': '娱乐', '人数': 2923 },
-            { '目的': '其他', '人数': 1723 },
-            { '目的': '其它2', '人数': 3792 },
-            { '目的': '其他3', '人数': 4593 }
-          ]
+          columns: buyPurposeColomn,
+          rows: buyPurposeRow
         },
         settings:{
-          radius: [60, 100],
+          radius: [40, 100],
           lable:{
             show: true,
             position: "center"
-          }
-          // offsetY: 
+          },
+          offsetY: 250,
         },
         title: {
           text: "购车目的",
@@ -313,7 +320,9 @@ export default {
           level:[
             ["10~20岁","20~30岁","30~40岁"],
             ["华北","西北","西南"]
-          ]
+          ],
+          offsetY: 250,
+
         },
         title:{
           text: "销售组成",
@@ -326,27 +335,47 @@ export default {
         },
       },
 
-
       
     };
   },
   // `methods` 内部的 `this` 指向当前活动实例
   methods: {
-    loadData: function () {
-      console.log(this.sales_line_chart);
-      this.sales_line_chart.data.rows = [
-        { 年份: "2017年", 销售额: 123, 销售: 193 },
-        { 年份: "2018年", 销售额: 13, 销售: 123 },
-        { 年份: "2019年", 销售额: 21234, 销售: 223 },
-        { 年份: "2020年", 销售额: 4123, 销售: 236 },
-        { 年份: "2021年", 销售额: 3123, 销售: 23 },
-      ];
+    // loadData: function () {
+    //   console.log(this.sales_line_chart);
+    //   this.sales_line_chart.data.rows = [
+    //     { 年份: "2017年", 销售额: 123, 销售: 193 },
+    //     { 年份: "2018年", 销售额: 13, 销售: 123 },
+    //     { 年份: "2019年", 销售额: 21234, 销售: 223 },
+    //     { 年份: "2020年", 销售额: 4123, 销售: 236 },
+    //     { 年份: "2021年", 销售额: 3123, 销售: 23 },
+    //   ];
+    // },
+    // brandChange: function(){
+    //   this.carNames = this.carBrands;
+    //   console.log(typeof(this.info_data.img));
+    //   console.log(document.getElementById("imgid").src);
+    // },
+    carBrandChange: function (ele) {
+      if(this.carClass != "")
+      {
+        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+      }
+      console.log(ele);
     },
-    brandChange: function(){
-      this.carNames = this.carBrands;
-      console.log(typeof(this.info_data.img));
-      console.log(document.getElementById("imgid").src);
-    }
+    carClassChange: function (ele) {
+      if(this.carBrand != "")
+      {
+        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+      }
+      console.log(ele);
+    },
+    carNameChange: function (ele) {
+      if(this.carName != "")
+      {
+        console.log("调用 API 来获取车辆名对应的信息情况并更新页面信息");
+      }
+      console.log(ele);
+    },
   },
 };
 </script>

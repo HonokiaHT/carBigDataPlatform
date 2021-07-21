@@ -8,37 +8,35 @@
     >
       <mobile-menu slot="content"></mobile-menu>
       <sidebar-link to="/dashboard">
-        <md-icon>dashboard</md-icon>
+        <md-icon>directions_car</md-icon>
         <p>车辆信息</p>
       </sidebar-link>
       <sidebar-link to="/user">
         <md-icon>person</md-icon>
-        <p>User Profile</p>
+        <p>用户偏好</p>
       </sidebar-link>
-      <sidebar-link to="/table">
-        <md-icon>content_paste</md-icon>
-        <p>Table list</p>
-      </sidebar-link>
+
       <sidebar-link to="/typography">
-        <md-icon>library_books</md-icon>
-        <p>Typography</p>
+        <md-icon>bubble_chart</md-icon>
+        <p>效益分析</p>
       </sidebar-link>
       <sidebar-link to="/icons">
-        <md-icon>bubble_chart</md-icon>
-        <p>Icons</p>
+        <md-icon>insights</md-icon>
+        <p>销售趋势</p>
       </sidebar-link>
       <sidebar-link to="/maps">
         <md-icon>location_on</md-icon>
-        <p>Maps</p>
+        <p>热点区域</p>
       </sidebar-link>
       <sidebar-link to="/notifications">
-        <md-icon>notifications</md-icon>
-        <p>Notifications</p>
+        <md-icon>compare</md-icon>
+        <p>对比分析</p>
       </sidebar-link>
-      <sidebar-link to="/upgrade" class="active-pro">
-        <md-icon>unarchive</md-icon>
-        <p>Upgrade to PRO</p>
+      <sidebar-link to="/table">
+        <md-icon>library_books</md-icon>
+        <p>信息查询</p>
       </sidebar-link>
+
     </side-bar>
 
     <div class="main-panel">
