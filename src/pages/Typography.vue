@@ -19,13 +19,14 @@
               <label for="carBrand_id">厂商</label>
               <md-select v-model="carBrand"
                         id="carBrand_id"
+                        @md-selected="carBrandChange"
                         >
                 <md-option 
                   v-for="singleCarBrand in carBrands"
-                  :key="singleCarBrand.id"
-                  :value="singleCarBrand.name"
+                  :key="singleCarBrand._id"
+                  :value="singleCarBrand.brand_name"
                   >
-                  {{singleCarBrand.name}}
+                  {{singleCarBrand.brand_name}}
                 </md-option>
               </md-select>
             </md-field>
@@ -34,13 +35,16 @@
           <div class="md-layout-item">
             <md-field>
               <label for="carClass_id">车型</label>
-              <md-select v-model="carClass" id="carClass_id">
+              <md-select v-model="carClass"
+                        id="carClass_id"
+                        @md-selected="carClassChange"
+                        >
                 <md-option 
                   v-for="singleCarClass in carClasses"
-                  :key="singleCarClass.id"
-                  :value="singleCarClass.name"
+                  :key="singleCarClass._id"
+                  :value="singleCarClass.class_name"
                   >
-                  {{singleCarClass.name}}
+                  {{singleCarClass.class_name}}
                 </md-option>
               </md-select>
             </md-field>
@@ -51,13 +55,14 @@
               <label for="carName_id">车名</label>
               <md-select v-model="carName"
                         id="carName_id"
-                        @click="brandChange">
+                        @md-selected="carNameChange"
+                        >
                 <md-option 
                   v-for="singleCarName in carNames"
-                  :key="singleCarName.sid"
-                  :value="singleCarName.name"
+                  :key="singleCarName._id"
+                  :value="singleCarName.car_name"
                   >
-                  {{singleCarName.name}}
+                  {{singleCarName.car_name}}
                 </md-option>
               </md-select>
             </md-field>
@@ -109,19 +114,15 @@ export default {
   data() {
     return {
       //车辆选择部分
-      carBrand: "品牌1",
+      carBrand: "",
       carClass: "",
-      carName: "",
+      carName: "待选定",
 
       carBrands: [
-        {id: 1, name: "品牌1"},
-        {id: 2, name: "品牌2"},
-        {id: 3, name: "品牌3"},
+
       ],       
       carClasses: [
-        {id: 1, name: "车型1"},
-        {id: 2, name: "车型2"},
-        {id: 3, name: "车型3"},
+
       ],
       carNames:[
 
@@ -133,17 +134,17 @@ export default {
         data: {
           columns: ["日期","搜索次数"],
           rows: [
-            { "日期": "2018-01-01", '搜索次数': 1393},
-            { '日期': '2018-01-02', '搜索次数': 3530},
-            { '日期': '2018-01-03', '搜索次数': 2923},
-            { '日期': '2018-01-05', '搜索次数': 1723},
-            { '日期': '2018-01-10', '搜索次数': 3792},
-            { '日期': '2018-01-20', '搜索次数': 4593}
+            { "日期": "2018-01", '搜索次数': 1393},
+            { '日期': '2018-02', '搜索次数': 3530},
+            { '日期': '2018-03', '搜索次数': 2923},
+            { '日期': '2018-04', '搜索次数': 1723},
+            { '日期': '2018-05', '搜索次数': 3792},
+            { '日期': '2018-06', '搜索次数': 4593}
           ],
         },
         markPoint: {
           data: [
-              {coord: ['2018-01-02', 3530], value: "广告1"},
+              {coord: ['2018-02', 3530], value: "广告1"},
               {type: 'max', name: '最大值'}
           ]
         },
@@ -189,6 +190,24 @@ export default {
       },
     };
   },
+
+  mounted(){
+    console.log("页面加载完成");
+    console.log("调用 API 来获取车品牌列表并更新下拉框数据");
+    console.log(this.carBrands);
+    this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findBrandList")
+      .then((response) => {
+          this.carBrands = response.data;
+          this.carBrand = this.carBrands[0].brand_name;
+          console.log(this.carBrands);
+        });
+
+
+    console.log("调用 API 来获取车型列表并更新下拉框数据");
+    this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findClassList")
+      .then((response) => (this.carClasses = response.data));
+  },
+
   // `methods` 内部的 `this` 指向当前活动实例
   methods: {
     loadData: function () {
@@ -196,17 +215,27 @@ export default {
       this.carBrands.push({id: 3, name: "品牌3"});
       console.log(this.carBrands);
     },
+    //更新下拉框
     carBrandChange: function (ele) {
+      this.carName = "待选定";
       if(this.carClass != "")
       {
         console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
+            .then((response) => (this.carNames = response.data));
+        console.log(this.carNames);
       }
       console.log(ele);
     },
+    //更新下拉框
     carClassChange: function (ele) {
+      this.carName = "待选定";
       if(this.carBrand != "")
       {
         console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
+          .then((response) => (this.carNames = response.data));
+        console.log(this.carNames);
       }
       console.log(ele);
     },

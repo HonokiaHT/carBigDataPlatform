@@ -26,10 +26,10 @@
                         @md-selected="carBrandChange">
                 <md-option 
                   v-for="singleCarBrand in carBrands"
-                  :key="singleCarBrand.id"
-                  :value="singleCarBrand.name"
+                  :key="singleCarBrand._id"
+                  :value="singleCarBrand.brand_name"
                   >
-                  {{singleCarBrand.name}}
+                  {{singleCarBrand.brand_name}}
                 </md-option>
               </md-select>
             </md-field>
@@ -44,10 +44,10 @@
                         @md-selected="carClassChange">
                 <md-option 
                   v-for="singleCarClass in carClasses"
-                  :key="singleCarClass.id"
-                  :value="singleCarClass.name"
+                  :key="singleCarClass._id"
+                  :value="singleCarClass.class_name"
                   >
-                  {{singleCarClass.name}}
+                  {{singleCarClass.class_name}}
                 </md-option>
               </md-select>
             </md-field>
@@ -61,10 +61,10 @@
                         @md-selected="carNameChange">
                 <md-option 
                   v-for="singleCarName in carNames"
-                  :key="singleCarName.id"
-                  :value="singleCarName.name"
+                  :key="singleCarName._id"
+                  :value="singleCarName.car_name"
                   >
-                  {{singleCarName.name}}
+                  {{singleCarName.car_name}}
                 </md-option>
               </md-select>
             </md-field>
@@ -91,7 +91,6 @@
           </div>
         </div>
 
-
         <ve-histogram :data="salesTrend_histogramChart.data"
                       :settings="salesTrend_histogramChart.settings"
                       theme="light">
@@ -113,33 +112,26 @@ export default {
       nameDisabled:true,
       selectYear:"0",
 
-      carBrand: "品牌1",
+      carBrand: "",
       carClass: "",
       carName: "",
 
       carBrands:[
-        {id: 1, name: "品牌1"},
-        {id: 2, name: "品牌2"},
-        {id: 3, name: "品牌3"},
       ],
       carClasses:[
-        {id: 1, name: "车型1"},
-        {id: 2, name: "车型2"},
-        {id: 3, name: "车型3"},
       ],
       carNames:[
-
       ],
 
       salesTrend_histogramChart:{
         data:{
           columns: ['年份', '销售量', '增长率'],
           rows: [
-            { '年份': '2017', '销售量': 1393, '增长率': 0.32 },
-            { '年份': '2018', '销售量': 3530, '增长率': 0.26 },
-            { '年份': '2019', '销售量': 2923, '增长率': 0.76 },
-            { '年份': '2020', '销售量': 1723, '增长率': 0.49 },
-            { '年份': '2021', '销售量': 3792, '增长率': 0.323 },
+            { '年份': '2017', '销售量': "", '增长率': "" },
+            { '年份': '2018', '销售量': "", '增长率': "" },
+            { '年份': '2019', '销售量': "", '增长率': "" },
+            { '年份': '2020', '销售量': "", '增长率': "" },
+            { '年份': '2021', '销售量': "", '增长率': "" },
           ]
         },
         settings:{
@@ -152,6 +144,24 @@ export default {
 
     }
   },
+
+  mounted(){
+    console.log("页面加载完成");
+    console.log("调用 API 来获取车品牌列表并更新下拉框数据");
+    console.log(this.carBrands);
+    this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findBrandList")
+      .then((response) => {
+          this.carBrands = response.data;
+          this.carBrand = this.carBrands[0].brand_name;
+          console.log(this.carBrands);
+        });
+
+
+    console.log("调用 API 来获取车型列表并更新下拉框数据");
+    this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findClassList")
+      .then((response) => (this.carClasses = response.data));
+  },
+
   methods: {
     //下拉框禁用逻辑
     selectByChange: function(ele){
@@ -164,6 +174,7 @@ export default {
       this.nameDisabled = ele != "name";
     },
 
+    //年份更改带来的图表更新，暂不需要
     selectYearChange: function(ele){
       if(this.selectBy == "brand" && this.carBrand != "")
       {
@@ -179,32 +190,66 @@ export default {
       }
     },
 
+    //品牌更改
     carBrandChange: function (ele) {
+      this.carName = "";
       if(this.selectBy == "brand")
       {
         console.log("由对应年份调用 API 来获取品牌的销量列表及增速并更新页面信息");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findBrandSale",{carBrand: this.carBrand})
+            .then((response) => {
+              for(let i in response.data.sales)
+                this.salesTrend_histogramChart.data.rows[i].销售量 = response.data.sales[i];
+              for(let i in response.data.zooms)
+                this.salesTrend_histogramChart.data.rows[i].增长率 = response.data.zooms[i] / 100.0;
+            });
       }
       else if(this.carClass != "")
       {
         console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
+            .then((response) => (this.carNames = response.data));
+        console.log(this.carNames);
       }
       console.log(ele);
     },
+
+    //车型更改
     carClassChange: function (ele) {
+      this.carName = "";
       if(this.selectBy == "class")
       {
         console.log("由对应年份调用 API 来获取车型的销量列表及增速并更新页面信息");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findClassSale",{carClass: this.carClass})
+          .then((response) => {
+            for(let i in response.data.sales)
+              this.salesTrend_histogramChart.data.rows[i].销售量 = response.data.sales[i];
+            for(let i in response.data.zooms)
+              this.salesTrend_histogramChart.data.rows[i].增长率 = response.data.zooms[i] / 100.0;
+          });
       }
       else if(this.carBrand != "")
       {
         console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
+          .then((response) => (this.carNames = response.data));
+        console.log(this.carNames);
       }
       console.log(ele);
     },
+
+    //车名更改
     carNameChange: function (ele) {
       if(this.selectBy == "name")
       {
         console.log("由对应年份调用 API 来获取车辆名的销量列表并更新页面信息");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarSale",{carName: this.carName})
+          .then((response) => {
+            for(let i in response.data.sales)
+              this.salesTrend_histogramChart.data.rows[i].销售量 = response.data.sales[i];
+            for(let i in response.data.zooms)
+              this.salesTrend_histogramChart.data.rows[i].增长率 = response.data.zooms[i] / 100.0;
+          });
       }
       console.log(ele);
     },

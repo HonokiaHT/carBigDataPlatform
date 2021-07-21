@@ -33,6 +33,10 @@ import Chartist from "chartist";
 
 import VCharts from "v-charts";
 
+import Axios from 'axios'
+/*设置全局axios，设置后即可在其它vue中直接使用$axios */
+Vue.prototype.$axios = Axios;
+
 
 // configure router
 const router = new VueRouter({
