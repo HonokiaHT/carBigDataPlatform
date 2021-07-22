@@ -279,18 +279,18 @@ export default {
   },
 
   mounted(){
-    console.log("页面加载完成");
-    console.log("调用 API 来获取车品牌列表并更新下拉框数据");
-    console.log(this.carBrands);
+    //console.log("页面加载完成");
+    //console.log("调用 API 来获取车品牌列表并更新下拉框数据");
+    //console.log(this.carBrands);
     this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findBrandList")
       .then((response) => {
           this.carBrands = response.data;
           this.carBrand = this.carBrands[0].brand_name;
-          console.log(this.carBrands);
+          //console.log(this.carBrands);
         });
 
 
-    console.log("调用 API 来获取车型列表并更新下拉框数据");
+    //console.log("调用 API 来获取车型列表并更新下拉框数据");
     this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findClassList")
       .then((response) => (this.carClasses = response.data));
   },
@@ -301,7 +301,7 @@ export default {
       this.carBrand = "";
       this.carClass = "";
       this.carName = "";
-      // console.log(ele);
+      // //console.log(ele);
       this.brandDisabled = ele == "class";
       this.classDisabled = ele == "brand";
       this.nameDisabled = ele != "name";
@@ -323,7 +323,7 @@ export default {
           this.sales_mapChart.visualMap.max = "120000";
         }
 
-        console.log("调用 API 来获取年份更改后的品牌的销量列表及增速并更新地图");
+        //console.log("调用 API 来获取年份更改后的品牌的销量列表及增速并更新地图");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarBrandSaleRegion",{carBrand: this.carBrand, year: this.selectYear})
             .then((response) => {
               for(let i in response.data)
@@ -344,7 +344,7 @@ export default {
           this.sales_mapChart.visualMap.max = "12000";
         }
 
-        console.log("调用 API 来获取年份更改后的车型的销量列表及增速并更新地图");
+        //console.log("调用 API 来获取年份更改后的车型的销量列表及增速并更新地图");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarClassSaleRegion",{carClass: this.carClass, year: this.selectYear})
             .then((response) => {
               for(let i in response.data)
@@ -370,7 +370,7 @@ export default {
           this.sales_mapChart.visualMap.max = "50000";
 
 
-        console.log("调用 API 来获取年份更改后的车辆名的销量列表及增速并更新地图");
+        //console.log("调用 API 来获取年份更改后的车辆名的销量列表及增速并更新地图");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarSaleRegion",{carName: this.carName, year: this.selectYear})
             .then((response) => {
               for(let i in response.data)
@@ -393,7 +393,7 @@ export default {
           this.sales_mapChart.visualMap.min = "50000";
           this.sales_mapChart.visualMap.max = "120000";
         }
-        console.log("由对应年份调用 API 来获取品牌的销量列表并更新地图");
+        //console.log("由对应年份调用 API 来获取品牌的销量列表并更新地图");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarBrandSaleRegion",{carBrand: this.carBrand, year: this.selectYear})
             .then((response) => {
               for(let i in response.data)
@@ -402,12 +402,12 @@ export default {
       }
       else if(this.carClass != "")
       {
-        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        //console.log("调用 API 来获取车辆名列表并更新下拉框数据");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
             .then((response) => (this.carNames = response.data));
-        // console.log(this.carNames);
+        // //console.log(this.carNames);
       }
-      // console.log(ele);
+      // //console.log(ele);
     },
 
     //车型更改
@@ -425,7 +425,7 @@ export default {
           this.sales_mapChart.visualMap.max = "25000";
         }
 
-        console.log("由对应年份调用 API 来获取车型的销量列表并更新地图");
+        //console.log("由对应年份调用 API 来获取车型的销量列表并更新地图");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarClassSaleRegion",{carClass: this.carClass, year: this.selectYear})
             .then((response) => {
               for(let i in response.data)
@@ -434,12 +434,12 @@ export default {
       }
       else if(this.carBrand != "")
       {
-        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        //console.log("调用 API 来获取车辆名列表并更新下拉框数据");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
           .then((response) => (this.carNames = response.data));
-        console.log(this.carNames);
+        //console.log(this.carNames);
       }
-      console.log(ele);
+      //console.log(ele);
     },
 
     //车辆名更改
@@ -457,14 +457,14 @@ export default {
           this.sales_mapChart.visualMap.max = "6000";
         }
 
-        console.log("由对应年份调用 API 来获取车辆名的销量列表并更新地图");
+        //console.log("由对应年份调用 API 来获取车辆名的销量列表并更新地图");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarSaleRegion",{carName: this.carName, year: this.selectYear})
             .then((response) => {
               for(let i in response.data)
                 this.sales_mapChart.series.data[i].value = response.data[i];
             });
       }
-      // console.log(ele);
+      // //console.log(ele);
     },
 
   },

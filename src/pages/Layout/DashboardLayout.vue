@@ -32,10 +32,10 @@
         <md-icon>compare</md-icon>
         <p>对比分析</p>
       </sidebar-link>
-      <sidebar-link to="/table">
+      <!-- <sidebar-link to="/table">
         <md-icon>library_books</md-icon>
         <p>信息查询</p>
-      </sidebar-link>
+      </sidebar-link> -->
 
     </side-bar>
 

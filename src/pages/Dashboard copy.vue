@@ -392,7 +392,7 @@ export default {
   // `methods` 内部的 `this` 指向当前活动实例
   methods: {
     loadData: function () {
-      console.log(this.sales_line_chart);
+      //console.log(this.sales_line_chart);
       this.sales_line_chart.data.rows = [
         { 年份: "2017年", 销售额: 123, 销售: 193 },
         { 年份: "2018年", 销售额: 13, 销售: 123 },

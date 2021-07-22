@@ -121,7 +121,9 @@
 
           <template slot="content">
             <h3 class="category">销售总量</h3>
-            <h3 class="title">{{selectedCarInfo.salesCount}}</h3>
+            <h3 class="title">{{selectedCarInfo.salesCount}}
+              <small>辆</small>
+            </h3>
           </template>
 
           <template slot="footer">
@@ -144,7 +146,9 @@
 
           <template slot="content">
             <h3 class="category">指导价</h3>
-            <h3 class="title">{{selectedCarInfo.price}}</h3>
+            <h3 class="title">{{selectedCarInfo.price}}
+              <small>万</small>
+            </h3>
           </template>
 
           <template slot="footer">
@@ -248,7 +252,6 @@ var salesComponent_pieChart_init = {
             { "组成": "上海", "销售数": "" },
             { "组成": "广东", "销售数": "" },
             { "组成": "重庆", "销售数": "" },
-
           ]
         };
 
@@ -317,7 +320,7 @@ export default {
         settings:{
           level:[
             ["北京","上海","广东","重庆"],
-            ["20~24岁","24~29岁","30~34岁","35~39岁","40岁以上"],
+            ["20~24岁","25~29岁","30~34岁","35~39岁","40岁以上"],
           ],
           offsetY: 250,
         },
@@ -446,7 +449,7 @@ export default {
           .then((response) => {
             this.selectedCarInfo.price = response.data.car_price;
             this.selectedCarInfo.oilConsume = response.data.car_consume;
-            this.selectedCarInfo.colors = response.data.car_color;
+            // this.selectedCarInfo.colors = response.data.car_color;
             this.selectedCarInfo.salesCount = response.data.car_salesCount;
             this.selectedCarInfo.img = response.data.car_img;
             console.log(response.data.car_img);
@@ -454,7 +457,11 @@ export default {
               this.hasImg = true;
             else
               this.hasImg = false;
+            
+            for(let i in response.data.car_color)
+              this.selectedCarInfo.colors = this.selectedCarInfo.colors + ", " + response.data.car_color[i];
 
+            this.selectedCarInfo.colors = this.selectedCarInfo.colors.slice(2);
           });
 
       }
