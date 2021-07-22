@@ -32,8 +32,11 @@ import MaterialDashboard from "./material-dashboard";
 import Chartist from "chartist";
 
 import VCharts from "v-charts";
+import echarts from 'echarts';
+Vue.prototype.$echarts = echarts;
 
-import Axios from 'axios'
+
+import Axios from 'axios';
 /*设置全局axios，设置后即可在其它vue中直接使用$axios */
 Vue.prototype.$axios = Axios;
 
@@ -53,6 +56,7 @@ Vue.use(GlobalDirectives);
 Vue.use(Notifications);
 
 Vue.use(VCharts);
+Vue.use(echarts);
 
 /* eslint-disable no-new */
 new Vue({
