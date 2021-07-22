@@ -31,7 +31,8 @@
               <label for="carClass_id">车型</label>
               <md-select v-model="carClass"
                         id="carClass_id"
-                        @md-selected="carClassChange">
+                        @md-selected="carClassChange"
+                        >
                 <md-option 
                   v-for="singleCarClass in carClasses"
                   :key="singleCarClass._id"
@@ -69,7 +70,7 @@
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
       >
         <h2 class="title">{{carName}}</h2>
-          <p>这里是图片</p>
+          <p v-if="!hasImg">这里是图片</p>
           <img id="imgid" :src= "selectedCarInfo.img"/>
           <table class="category">
             <!-- <tr>
@@ -224,6 +225,33 @@ import VeLine from "v-charts/lib/line.common";
 import VePie from "v-charts/lib/pie.common";
 
 var salesComponentColomn = "";
+var buyPurpose_ringChart_init = {
+          columns: ['目的','人数'],
+          rows: [
+            { '目的': '旅行', '人数': "" },
+            { '目的': '代步', '人数': "" },
+            { '目的': '娱乐', '人数': "" },
+            { '目的': '商业', '人数': "" },
+            { '目的': '其它', '人数': "" },
+          ]
+        };
+var salesComponent_pieChart_init = {
+          columns: ["组成", "销售数"],
+          rows: [
+            { "组成": "20~24岁", "销售数": "" },
+            { "组成": "25~29岁", "销售数": "" },
+            { "组成": "30~34岁", "销售数": "" },
+            { "组成": "35~39岁", "销售数": "" },
+            { "组成": "40岁以上", "销售数": "" },
+
+            { "组成": "北京", "销售数": "" },
+            { "组成": "上海", "销售数": "" },
+            { "组成": "广东", "销售数": "" },
+            { "组成": "重庆", "销售数": "" },
+
+          ]
+        };
+
 
 
 export default {
@@ -244,36 +272,26 @@ export default {
       carName: "待选定",
 
       carBrands: [
-        
       ],       
       carClasses: [
-
       ],
       carNames:[
-
       ],
+
+      hasImg: false,
 
       //车辆信息
       selectedCarInfo:{
-        salesCount: 23367,
-        price: "100,086",
-        oilConsume: 100,
-        colors: ["蓝","红","绿"],
-        img: "https://car3.autoimg.cn/cardfs/product/g26/M05/FD/1B/1024x0_1_q95_autohomecar__ChwFkF9jgNOAe-mVADb8z2QVNjU291.jpg",
+        salesCount: "",
+        price: "",
+        oilConsume: "",
+        colors: "",
+        img: "",
       },
 
       //购车目的
       buyPurpose_ringChart:{
-        data:{
-          columns: ['目的','人数'],
-          rows: [
-            { '目的': '旅行', '人数': 1393 },
-            { '目的': '代步', '人数': 3530 },
-            { '目的': '娱乐', '人数': 2923 },
-            { '目的': '商业', '人数': 1723 },
-            { '目的': '其它', '人数': 3792 },
-          ]
-        },
+        data: buyPurpose_ringChart_init,
         settings:{
           radius: [40, 100],
           lable:{
@@ -284,7 +302,7 @@ export default {
         },
         title: {
           text: "购车目的",
-          subtext: '虚构',
+          // subtext: '虚构',
           left: 'center'
         },
         legend: {
@@ -295,31 +313,17 @@ export default {
 
       //销售组成
       salesComponent_pieChart:{
-        data:{
-          columns: ["组成", "销售数"],
-          rows: [
-            { "组成": "20~24岁", "销售数": 1393 },
-            { "组成": "25~29岁", "销售数": 3530 },
-            { "组成": "30~34岁", "销售数": 2923 },
-            { "组成": "35~39岁", "销售数": 2923 },
-            { "组成": "40岁以上", "销售数": 2923 },
-
-            { "组成": "华北", "销售数": 1723 },
-            { "组成": "西北", "销售数": 3792 },
-            { "组成": "西南", "销售数": 4593 },
-          ]
-        },
+        data: salesComponent_pieChart_init,
         settings:{
           level:[
-            ["华北","西北","西南"],
+            ["北京","上海","广东","重庆"],
             ["20~24岁","24~29岁","30~34岁","35~39岁","40岁以上"],
           ],
           offsetY: 250,
-
         },
         title:{
           text: "销售组成",
-          subtext: "虚构",
+          // subtext: "虚构",
           left: "center"
         },
         legend: {
@@ -334,62 +338,77 @@ export default {
 
   mounted(){
     console.log("页面加载完成");
+
     console.log("调用 API 来获取车品牌列表并更新下拉框数据");
-    console.log(this.carBrands);
+    // console.log(this.carBrands);
     this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findBrandList")
       .then((response) => {
           this.carBrands = response.data;
           this.carBrand = this.carBrands[0].brand_name;
-          console.log(this.carBrands);
+          // this.carName = this.carNames[0].car_name;
+          // console.log(this.carBrands);
         });
 
 
     console.log("调用 API 来获取车型列表并更新下拉框数据");
     this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findClassList")
-      .then((response) => (this.carClasses = response.data));
+      .then((response) => {
+        this.carClasses = response.data;
+        this.carClass = this.carClasses[3].class_name;
+      });
   },
+
   // `methods` 内部的 `this` 指向当前活动实例
   methods: {
-    // loadData: function () {
-    //   console.log(this.sales_line_chart);
-    //   this.sales_line_chart.data.rows = [
-    //     { 年份: "2017年", 销售额: 123, 销售: 193 },
-    //     { 年份: "2018年", 销售额: 13, 销售: 123 },
-    //     { 年份: "2019年", 销售额: 21234, 销售: 223 },
-    //     { 年份: "2020年", 销售额: 4123, 销售: 236 },
-    //     { 年份: "2021年", 销售额: 3123, 销售: 23 },
-    //   ];
-    // },
-    // brandChange: function(){
-    //   this.carNames = this.carBrands;
-    //   console.log(typeof(this.info_data.img));
-    //   console.log(document.getElementById("imgid").src);
-    // },
-
-    //更新下拉框
+    //品牌选定
     carBrandChange: function (ele) {
       this.carName = "待选定";
       if(this.carClass != "")
       {
-        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        console.log("调用 API 来获取车辆名列表并更新下拉框数据1");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
-            .then((response) => (this.carNames = response.data));
-        console.log(this.carNames);
+            .then((response) => {
+              this.carNames = response.data;
+              if(this.carNames[0] != null)
+                this.carName = this.carNames[0].car_name;
+              else
+              {
+                // this.buyPurpose_ringChart.data = buyPurpose_ringChart_init;
+                // this.salesComponent_pieChart.data = salesComponent_pieChart_init;
+                this.selectedCarInfo.price = "";
+                this.selectedCarInfo.oilConsume = "";
+                this.selectedCarInfo.colors = "";
+                this.selectedCarInfo.salesCount = "";
+                this.selectedCarInfo.img = "";
+              }
+            });
       }
       console.log(ele);
     },
-    //更新下拉框
+    //车型选定
     carClassChange: function (ele) {
       this.carName = "待选定";
       if(this.carBrand != "")
       {
-        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        console.log("调用 API 来获取车辆名列表并更新下拉框数据2");
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
-          .then((response) => (this.carNames = response.data));
-        console.log(this.carNames);
+          .then((response) => {
+            this.carNames = response.data;
+            if(this.carNames[0] != null)
+              this.carName = this.carNames[0].car_name;
+            else
+            {
+              this.selectedCarInfo.price = "";
+              this.selectedCarInfo.oilConsume = "";
+              this.selectedCarInfo.colors = "";
+              this.selectedCarInfo.salesCount = "";
+              this.selectedCarInfo.img = "";
+            }
+          });
       }
       console.log(ele);
     },
+
     //更新页面内所有车辆相关信息
     carNameChange: function (ele) {
       if(this.carName != "")
@@ -401,17 +420,26 @@ export default {
           .then((response) => {
             for (let i in response.data)
               this.buyPurpose_ringChart.data.rows[i].人数 = response.data[i];
-            console.log(this.buyPurpose_ringChart.data.rows);
+            // console.log(this.buyPurpose_ringChart.data.rows);
           });
         
-        //更新销售组成
+        //更新销售组成_年龄
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findBuyCompose",{carName: this.carName})
           .then((response) => {
             for (let i = 0; i < 5; i++)
               this.salesComponent_pieChart.data.rows[i].销售数 = response.data[i];
-            console.log(this.salesComponent_pieChart.data.rows);
+            // console.log(this.salesComponent_pieChart.data.rows);
           });
-        
+
+        //更新销售组成_北上广重
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarSaleRegion",{carName: this.carName, year: "0"})
+          .then((response) => {
+              this.salesComponent_pieChart.data.rows[5].销售数 = response.data[0];
+              this.salesComponent_pieChart.data.rows[6].销售数 = response.data[8];
+              this.salesComponent_pieChart.data.rows[7].销售数 = response.data[18];
+              this.salesComponent_pieChart.data.rows[8].销售数 = response.data[21];
+          });
+
 
         //更新车辆信息
         this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findCarInfo",{carName: this.carName})
@@ -421,6 +449,12 @@ export default {
             this.selectedCarInfo.colors = response.data.car_color;
             this.selectedCarInfo.salesCount = response.data.car_salesCount;
             this.selectedCarInfo.img = response.data.car_img;
+            console.log(response.data.car_img);
+            if(response.data.car_img != "")
+              this.hasImg = true;
+            else
+              this.hasImg = false;
+
           });
 
       }

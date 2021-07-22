@@ -2,145 +2,77 @@
   <div class="content">
     <div class="md-layout">
       <div class="md-layout-item">
-        <md-card>
-          <md-card-header data-background-color="green">
-            <h4 class="title">Notifications</h4>
-            <p class="category">
-              Handcrafted by us with <i class="fa fa-heart heart"></i>
-            </p>
-          </md-card-header>
-          <md-card-content>
-            <div class="md-layout">
-              <div class="md-layout-item md-medium-size-100">
-                <h5>Notifications Style</h5>
-                <div class="alert alert-info">
-                  <span>This is a plain notification</span>
-                </div>
-                <div class="alert alert-info">
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <span>This is a notification with close button.</span>
-                </div>
-                <div
-                  class="alert alert-info alert-with-icon"
-                  data-notify="container"
-                >
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <i data-notify="icon" class="material-icons">add_alert</i>
-                  <span data-notify="message"
-                    >This is a notification with close button and icon.</span
-                  >
-                </div>
-                <div
-                  class="alert alert-info alert-with-icon"
-                  data-notify="container"
-                >
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <i data-notify="icon" class="material-icons">add_alert</i>
-                  <span data-notify="message"
-                    >This is a notification with close button and icon and have
-                    many lines. You can see that the icon and the close button
-                    are always vertically aligned. This is a beautiful
-                    notification. So you don't have to worry about the
-                    style.</span
-                  >
-                </div>
-              </div>
-              <div class="md-layout-item md-medium-size-100">
-                <h5>Notification states</h5>
-                <div class="alert alert-info">
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <span
-                    ><b> Info - </b> This is a regular notification made with
-                    ".alert-info"</span
-                  >
-                </div>
-                <div class="alert alert-success">
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <span
-                    ><b> Success - </b> This is a regular notification made with
-                    ".alert-success"</span
-                  >
-                </div>
-                <div class="alert alert-warning">
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <span
-                    ><b> Warning - </b> This is a regular notification made with
-                    ".alert-warning"</span
-                  >
-                </div>
-                <div class="alert alert-danger">
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <span
-                    ><b> Danger - </b> This is a regular notification made with
-                    ".alert-danger"</span
-                  >
-                </div>
-                <div class="alert alert-primary">
-                  <button type="button" aria-hidden="true" class="close">
-                    ×
-                  </button>
-                  <span
-                    ><b> Primary - </b> This is a regular notification made with
-                    ".alert-primary"</span
-                  >
-                </div>
-              </div>
 
-              <div class="md-layout-item md-size-100">
-                <div class="places-buttons text-center">
-                  <h5 class="text-center">
-                    Notifications Places
-                    <p class="category">Click to view notifications</p>
-                  </h5>
-                  <md-button
-                    class="md-primary"
-                    @click="notifyVue('top', 'left')"
-                    >Top Left</md-button
+        <!-- 筛选栏 -->
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item">
+            <md-field>
+              <label for="carBrand_id">厂商</label>
+              <md-select v-model="carBrand"
+                        id="carBrand_id"
+                        @md-selected="carBrandChange"
+                        >
+                <md-option 
+                  v-for="singleCarBrand in carBrands"
+                  :key="singleCarBrand._id"
+                  :value="singleCarBrand.brand_name"
                   >
-                  <md-button
-                    class="md-primary"
-                    @click="notifyVue('top', 'center')"
-                    >Top Center</md-button
+                  {{singleCarBrand.brand_name}}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div>
+
+          <div class="md-layout-item">
+            <md-field>
+              <label for="carClass_id">车型</label>
+              <md-select v-model="carClass"
+                        id="carClass_id"
+                        @md-selected="carClassChange"
+                        >
+                <md-option 
+                  v-for="singleCarClass in carClasses"
+                  :key="singleCarClass._id"
+                  :value="singleCarClass.class_name"
                   >
-                  <md-button
-                    class="md-primary"
-                    @click="notifyVue('top', 'right')"
-                    >Top Right</md-button
+                  {{singleCarClass.class_name}}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div>
+
+          <!-- <div class="md-layout-item">
+            <md-field>
+              <label for="carName_id">车名</label>
+              <md-select v-model="carName"
+                        id="carName_id"
+                        @md-selected="carNameChange"
+                        >
+                <md-option 
+                  v-for="singleCarName in carNames"
+                  :key="singleCarName._id"
+                  :value="singleCarName.car_name"
                   >
-                  <md-button
-                    class="md-primary"
-                    @click="notifyVue('bottom', 'left')"
-                    >Bottom Left</md-button
-                  >
-                  <md-button
-                    class="md-primary"
-                    @click="notifyVue('bottom', 'center')"
-                    >Bottom Center</md-button
-                  >
-                  <md-button
-                    class="md-primary"
-                    @click="notifyVue('bottom', 'right')"
-                    >Bottom Right</md-button
-                  >
-                </div>
-              </div>
-            </div>
-          </md-card-content>
-        </md-card>
+                  {{singleCarName.car_name}}
+                </md-option>
+              </md-select>
+            </md-field>
+          </div> -->
+        </div>
+
+        <ve-line
+          :data="carContrast_linePieChart.data"
+          :tooltip="carContrast_linePieChart.toolTip"
+          :dataset="carContrast_linePieChart.dataset"
+          :xAxis="carContrast_linePieChart.xAxis"
+          :yAxis="carContrast_linePieChart.yAxis"
+          :grid="carContrast_linePieChart.grid"
+
+        >
+        </ve-line>
+
+
+
       </div>
     </div>
   </div>
@@ -150,24 +82,107 @@
 export default {
   data() {
     return {
-      type: ["", "info", "success", "warning", "danger"],
-      notifications: {
-        topCenter: false
-      }
+      //车辆选择部分
+      carBrand: "",
+      carClass: "",
+      carName: "待选定",
+
+      carBrands: [
+      ],       
+      carClasses: [
+      ],
+      carNames:[
+      ],
+
     };
   },
+
+ mounted(){
+    console.log("页面加载完成");
+    console.log("调用 API 来获取车品牌列表并更新下拉框数据");
+    console.log(this.carBrands);
+    this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findBrandList")
+      .then((response) => {
+          this.carBrands = response.data;
+          this.carBrand = this.carBrands[0].brand_name;
+          console.log(this.carBrands);
+        });
+
+
+    console.log("调用 API 来获取车型列表并更新下拉框数据");
+    this.$axios.get("https://qcqn74.fn.thelarkcloud.com/findClassList")
+      .then((response) => (this.carClasses = response.data));
+  },
+
+
+
   methods: {
-    notifyVue(verticalAlign, horizontalAlign) {
-      var color = Math.floor(Math.random() * 4 + 1);
-      this.$notify({
-        message:
-          "Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.",
-        icon: "add_alert",
-        horizontalAlign: horizontalAlign,
-        verticalAlign: verticalAlign,
-        type: this.type[color]
-      });
-    }
+    //车品牌更新
+    carBrandChange: function (ele) {
+      this.carName = "待选定";
+      if(this.carClass != "")
+      {
+        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
+          .then((response) => {
+            this.carNames = response.data;
+            if(this.carNames[0] != null)
+              this.carName = this.carNames[0].car_name;
+          });
+      }
+      console.log(ele);
+    },
+
+    //车型更新
+    carClassChange: function (ele) {
+      this.carName = "待选定";
+      if(this.carBrand != "")
+      {
+        console.log("调用 API 来获取车辆名列表并更新下拉框数据");
+        this.$axios.post("https://qcqn74.fn.thelarkcloud.com/carNameCheck",{carBrand: this.carBrand, carClass: this.carClass})
+          .then((response) => {
+            this.carNames = response.data;
+            if(this.carNames[0] != null)
+              this.carName = this.carNames[0].car_name;
+          });
+      }
+      console.log(ele);
+    },
+
+    // //车辆名更新
+    // carNameChange: function (ele) {
+    //   if(this.carName != "")
+    //   {
+      
+
+    //     console.log("调用 API 来获取车辆名对应的搜索次数以及广告投放并更新页面信息");
+    //     this.$axios.post("https://qcqn74.fn.thelarkcloud.com/findAD",{carName: this.carName})
+    //       .then((response) => {
+    //         console.log(response.data);
+    //         //先清空
+    //         this.searches_lineChart.markPoint.data = [];
+    //         for(let i in this.searches_lineChart.data.rows)
+    //         {
+    //           this.searches_lineChart.data.rows[i].搜索次数 = "";
+    //         }
+
+    //         //再赋值s
+    //         for(let i in response.data.month_index)
+    //         {
+    //           this.searches_lineChart.data.rows[i].搜索次数 = response.data.month_index[i];
+    //           if(response.data.ad_data_cost[i] != 0)
+    //           {
+    //             this.searches_lineChart.markPoint.data.push({
+    //               coord: [this.searches_lineChart.data.rows[i].日期, this.searches_lineChart.data.rows[i].搜索次数],
+    //               value: response.data.ad_data_cost[i],
+    //             })
+    //           }
+    //         }
+    //       });
+
+    //   }
+    //   console.log(ele);
+    // },
   }
 };
 </script>
