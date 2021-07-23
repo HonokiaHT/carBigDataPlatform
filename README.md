@@ -4,11 +4,67 @@
 
 ![map_example](./src/map_example.png)
 
+
+
+---
+
+## 部署说明
+
+
+
+### 前期准备
+
+#### 获取代码
+
+- 方案一：
+
+  解压代码包压缩文件
+
+- 方案二：
+
+  `git clone https://github.com/HonokiaHT/carBigDataPlatform.git `
+
+  
+
+#### 环境配置
+
+[Node.js](https://nodejs.org/en/)
+
+建议使用 LTS 版本
+
+
+
+### 部署本项目
+
+部署过程示例：
+
+```shell
+git clone https://github.com/HonokiaHT/carBigDataPlatform.git
+cd carBigDataPlatform
+
+# 安装依赖
+npm install
+```
+
+
+
+确保安装依赖过程中没有发生错误后：
+
+```shell
+npm run serve
+```
+
+
+
+等待加载完毕后，访问 `http://localhost:8080/` 即可。
+
+
+
 ---
 
 
 
-### 图表添加方法
+### 附：图表添加方法
 
 1. 使用 **`npm i v-charts echarts@4.9.0 -S`** 来安装 vcharts 以及 echarts，且使用低版本 echarts 来避免不适配。
 
@@ -56,5 +112,4 @@
    ```
 
    
-
 
